@@ -25,10 +25,20 @@ const routes = [
   }
 ];
 
-const router = new VueRouter({
-  mode: "history",
-  base: process.env.BASE_URL,
-  routes
-});
+const createRouter = () =>
+  new VueRouter({
+    mode: "history", // require service support
+    scrollBehavior: () => ({
+      y: 0
+    }),
+    routes: routes
+  });
+
+const router = createRouter();
+
+export function resetRouter() {
+  const newRouter = createRouter();
+  router.matcher = newRouter.matcher; // reset router
+}
 
 export default router;

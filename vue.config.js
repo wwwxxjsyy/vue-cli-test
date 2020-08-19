@@ -16,21 +16,16 @@ module.exports = {
   productionSourceMap: false, // 是否在构建生产包时生成 sourceMap 文件，false将提高构建速度
   devServer: {
     port: 9527,
-    open: false,
+    open: true,
     overlay: {
       warnings: false,
       errors: true
     },
     proxy: {
       "/api": {
-        target: "http://192.168.10.23:8080/",
-        changeOrigin: true,
-        pathRewrite: {
-          "^/api": "/"
-        }
-      },
-      "/foo": {
-        target: "<other_url>"
+        target: "http://192.168.30.55:8080",
+        ws: true,
+        changeOrigin: true
       }
     },
     before: app => {}
