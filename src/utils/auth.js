@@ -1,7 +1,8 @@
-const TokenKey = "user_token";
+import Cookies from "js-cookie";
+const TokenKey = "AuthorizationOtech";
 
 export function getToken() {
-  return sessionStorage.getItem(TokenKey);
+  return Cookies.get(TokenKey);
 }
 
 export function setToken(token) {
