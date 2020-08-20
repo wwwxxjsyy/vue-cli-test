@@ -23,7 +23,8 @@ module.exports = {
       "/api": {
         target: "http://192.168.30.55:8080",
         ws: true,
-        changeOrigin: true
+        changeOrigin: true,
+        secure: false
       }
     },
     before: app => {}

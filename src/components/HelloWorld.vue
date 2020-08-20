@@ -120,25 +120,8 @@ export default {
     msg: String
   },
   created() {
-    // this.$axios
-    //   .post("/api/NuclearNoteI/SearchDetailDocList", {
-    //     headId: "4734",
-    //     clientId: 0,
-    //     pageIndex: 1,
-    //     pageSize: 10
-    //   })
-    //   .then(function(result) {
-    //     console.log(result, "res");
-    //   })
-    //   .catch(function(err) {
-    //     console.log(err, "err");
-    //   });
-    const obj = {
-      headId: "4734",
-      clientId: 0,
-      pageIndex: 1,
-      pageSize: 10
-    };
+    const obj = { DropdownType: 49, Search: "" };
+
     SearchDetailDocList(obj)
       .then(res => {
         console.log(res, "res");

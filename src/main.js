@@ -7,12 +7,13 @@ import axios from "axios";
 Vue.config.productionTip = false;
 
 axios
-  .get("config.json")
+  .get("./config.json")
   .then(res => {
     let OversUrl =
-      process.env.NODE_ENV == "production" ? res.production : res.develop;
+      process.env.NODE_ENV == "production"
+        ? res.data.production
+        : res.data.develop;
     Vue.prototype.$baseUrl = OversUrl;
-
     store.dispatch("user/setajaxurl", OversUrl);
     /* eslint-disable no-new */
     new Vue({

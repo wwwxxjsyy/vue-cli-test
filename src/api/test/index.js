@@ -5,7 +5,7 @@ import request from "@/utils/request";
  */
 export function SearchDetailDocList(data) {
   return request({
-    url: "/api/NuclearNoteI/SearchDetailDocList",
+    url: "/apil/DeskTop/BaseData/GetBaseDataList",
     method: "post",
     data
   });

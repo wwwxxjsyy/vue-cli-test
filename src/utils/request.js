@@ -3,25 +3,17 @@ import qs from "qs"; //这个是axios里面的模块，用于序列化参数的�
 import { getToken } from "@/utils/auth"; //获取到token
 import store from "@/store";
 
-console.log(getToken());
-
 //创建一个axios实例
-axios.create({
+const service = axios.create({
   timeout: 5000,
-  baseURL: store.getters.baseUrl,
-  //transformRequest 这里主要是 post请求时 请求成功了，但是后台并没
-  //有获取到前端的请求参数。如果后台是直接从请求体里取的话，请忽略
-  transformRequest: [
-    data => {
-      let params = qs.stringify(data, { indices: false });
-      return params;
-    }
-  ]
+  headers: { "Content-Type": "application/json;charset=utf-8" }
 });
 
+
 // 请求拦截器
-axios.interceptors.request.use(
+service.interceptors.request.use(
   config => {
+    config.baseURL = store.getters.baseUrl;
     config.headers["Authorization"] = getToken();
     return config;
   },
@@ -31,7 +23,7 @@ axios.interceptors.request.use(
 );
 
 //响应拦截器
-axios.interceptors.response.use(
+service.interceptors.response.use(
   response => {
     const res = response.data;
     if (res.code != 200) {
@@ -56,4 +48,4 @@ axios.interceptors.response.use(
   }
 );
 
-export default axios;
+export default service;
