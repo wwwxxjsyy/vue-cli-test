@@ -5,6 +5,24 @@
   </div>
 </template>
 
+<script>
+import img from "@img/logo.png";
+export default {
+  name: "",
+  data() {
+    return {};
+  },
+  created() {
+    console.log(img);
+  },
+  computed: {
+    img() {
+      return img;
+    }
+  }
+};
+</script>
+
 <style lang="scss" scoped>
 .className {
   color: black;

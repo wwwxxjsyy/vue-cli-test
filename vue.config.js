@@ -3,10 +3,21 @@ function resolve(dir) {
   return path.join(__dirname, dir);
 }
 
+const isProduction = process.env.NODE_ENV === "production";
+const cdn = {
+  css: [],
+  js: [
+    "https://cdn.bootcss.com/vue/2.5.17/vue.runtime.min.js",
+    "https://cdn.bootcss.com/vue-router/3.0.1/vue-router.min.js",
+    "https://cdn.bootcss.com/vuex/3.0.1/vuex.min.js",
+    "https://cdn.bootcss.com/axios/0.18.0/axios.min.js"
+  ]
+};
+
 module.exports = {
   publicPath: "./",
   outputDir: "dist",
-  assetsDir: "static",
+  assetsDir: "static", // 放置生成的静态资源 (js、css、img、fonts) 的 (相对于 outputDir 的) 目录。
   indexPath: "index.html", //用来指定index.html最终生成的路径
   filenameHashing: false, //对dist中js的文件引用都变成了hash之后的文件名
   // lintOnSave: process.env.NODE_ENV === "development",
@@ -15,6 +26,7 @@ module.exports = {
   devServer: {
     port: 9527,
     open: true,
+    compress: false, // 开启压缩
     overlay: {
       warnings: false,
       errors: true
@@ -29,23 +41,37 @@ module.exports = {
     },
     before: app => {}
   },
-  configureWebpack: {
-    resolve: {
-      extensions: [".js", ".vue", ".json"],
-      alias: {
-        vue$: "vue/dist/vue.esm.js",
-
-        "@": resolve("src"),
-
-        "/libs": path.resolve(__dirname, "../src/libs"),
-
-        "/public": resolve("public")
-      }
-    }
-  },
+  configureWebpack: {},
   chainWebpack(config) {
-    config.plugins.delete("preload"); // TODO: need test
-    config.plugins.delete("prefetch"); // TODO: need test
+    // 配置别名
+    config.resolve.alias
+      .set("@", resolve("src"))
+
+      .set("@img", resolve("src/assets/images"))
+
+      .set("@css", resolve("src/assets/styles/css"))
+
+      .set("@scss", resolve("src/assets/styles/scss"))
+
+      .set("@public", resolve("public"));
+
+    // 生产环境配置
+    if (isProduction) {
+      // 删除预加载
+      config.plugins.delete("preload"); //  移除 preload 插件
+      config.plugins.delete("prefetch"); // 移除 prefetch 插件
+      // 压缩代码
+      config.optimization.minimize(true);
+      // 分割代码
+      config.optimization.splitChunks({
+        chunks: "all"
+      });
+      // 生产环境注入cdn
+      config.plugin("html").tap(args => {
+        args[0].cdn = cdn;
+        return args;
+      });
+    }
 
     // set svg-sprite-loader
     config.module
@@ -74,48 +100,5 @@ module.exports = {
         return options;
       })
       .end();
-
-    config
-      // https://webpack.js.org/configuration/devtool/#development
-      .when(process.env.NODE_ENV === "development", config =>
-        config.devtool("cheap-source-map")
-      );
-
-    config.when(process.env.NODE_ENV !== "development", config => {
-      config
-        .plugin("ScriptExtHtmlWebpackPlugin")
-        .after("html")
-        .use("script-ext-html-webpack-plugin", [
-          {
-            // `runtime` must same as runtimeChunk name. default is `runtime`
-            inline: /runtime\..*\.js$/
-          }
-        ])
-        .end();
-      config.optimization.splitChunks({
-        chunks: "all",
-        cacheGroups: {
-          libs: {
-            name: "chunk-libs",
-            test: /[\\/]node_modules[\\/]/,
-            priority: 10,
-            chunks: "initial" // only package third parties that are initially dependent
-          },
-          elementUI: {
-            name: "chunk-elementUI", // split elementUI into a single package
-            priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
-            test: /[\\/]node_modules[\\/]_?element-ui(.*)/ // in order to adapt to cnpm
-          },
-          commons: {
-            name: "chunk-commons",
-            test: resolve("src/components"), // can customize your rules
-            minChunks: 3, //  minimum common number
-            priority: 5,
-            reuseExistingChunk: true
-          }
-        }
-      });
-      config.optimization.runtimeChunk("single");
-    });
   }
 };

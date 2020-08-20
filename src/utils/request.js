@@ -9,6 +9,7 @@ const service = axios.create({
   headers: { "Content-Type": "application/json;charset=utf-8" }
 });
 
+// axios.defaults.withCredentials = true;
 
 // 请求拦截器
 service.interceptors.request.use(
