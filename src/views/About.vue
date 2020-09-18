@@ -16,7 +16,7 @@ export default {
     return {};
   },
   created() {
-    console.log(img);
+    // console.log(img);
   },
   computed: {
     img() {
