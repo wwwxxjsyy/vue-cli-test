@@ -49,9 +49,9 @@ module.exports = {
 
       .set("@img", resolve("src/assets/images"))
 
-      .set("@css", resolve("src/assets/styles/css"))
+      .set("@css", resolve("src/assets/css"))
 
-      .set("@scss", resolve("src/assets/styles/scss"))
+      .set("@scss", resolve("src/assets/scss"))
 
       .set("@public", resolve("public"));
 
