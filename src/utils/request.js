@@ -1,6 +1,6 @@
 import axios from "axios";
 import qs from "qs"; //这个是axios里面的模块，用于序列化参数的。 看情况使用哦
-import { getToken } from "@/utils/auth"; //获取到token
+import { getToken, removeToken } from "@/utils/auth"; //获取到token
 import store from "@/store";
 
 //创建一个axios实例
@@ -36,7 +36,7 @@ service.interceptors.response.use(
           type: "warning"
         }).then(() => {
           //退回到登录页 需要将sessionStorage里面的值给清空掉
-          sessionStorage.clear();
+          removeToken()
         });
       }
       return res;

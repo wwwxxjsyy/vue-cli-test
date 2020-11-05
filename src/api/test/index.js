@@ -3,9 +3,9 @@ import request from "@/utils/request";
 /**
  *分页
  */
-export function SearchDetailDocList(data) {
+export function GetRecordListPagedList(data) {
   return request({
-    url: "/apil/DeskTop/BaseData/GetBaseDataList",
+    url: "/api/CusDecPrepartManagementImported/GetRecordListPagedList",
     method: "post",
     data
   });

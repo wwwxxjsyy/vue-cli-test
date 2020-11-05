@@ -111,8 +111,9 @@
 </template>
 
 <script>
-import { SearchDetailDocList } from "@/api/test";
+import { GetRecordListPagedList } from "@/api/test";
 import { mapGetters } from "vuex";
+import axios from "axios";
 
 export default {
   name: "HelloWorld",
@@ -120,15 +121,31 @@ export default {
     msg: String
   },
   created() {
-    const obj = { DropdownType: 49, Search: "" };
-
-    SearchDetailDocList(obj)
+    const data = {
+      PageIndex: 1,
+      PageSize: 10,
+      userNameOrPhoneOrEmailAddress: "test@ttstms.com",
+      password: "Otech@6666",
+      Code: "",
+      GenerId: "764eed17-d134-3e90-e7b7-cd28aeedbab5"
+    };
+    GetRecordListPagedList(data)
       .then(res => {
         console.log(res, "res");
       })
       .catch(err => {
         console.log(err, "err");
       });
+    // axios
+    //   .post("/api/partner_relations_management/login/token", {
+    //     userNameOrPhoneOrEmailAddress: "test@ttstms.com",
+    //     password: "Otech@6666",
+    //     Code: "",
+    //     GenerId: "764eed17-d134-3e90-e7b7-cd28aeedbab5"
+    //   })
+    //   .then(res => {
+    //     console.log(res);
+    //   });
   },
   computed: {
     ...mapGetters(["baseUrl"])

@@ -6,9 +6,9 @@ export function getToken() {
 }
 
 export function setToken(token) {
-  return sessionStorage.setItem(TokenKey, token);
+  return Cookies.set(TokenKey, token);
 }
 
 export function removeToken() {
-  return sessionStorage.remove(TokenKey);
+  return Cookies.remove(TokenKey);
 }
