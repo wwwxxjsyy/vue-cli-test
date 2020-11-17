@@ -11,8 +11,7 @@
 <script>
 export default {
   name: "app",
-  created() {
-  },
+  created() {}
 };
 </script>
 

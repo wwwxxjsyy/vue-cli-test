@@ -1,4 +1,6 @@
 const path = require("path");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+
 function resolve(dir) {
   return path.join(__dirname, dir);
 }
@@ -94,6 +96,16 @@ module.exports = {
           minRatio: 0.8
         })
       );
+
+      new UglifyJsPlugin({
+        uglifyOptions: {
+          compress: {
+            warnings: false,
+            drop_debugger: true,
+            drop_console: true,
+          },
+        },
+      })
     }
 
     // set svg-sprite-loader
