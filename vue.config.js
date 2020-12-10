@@ -35,7 +35,7 @@ module.exports = {
     },
     proxy: {
       "/api": {
-        target: "http://192.168.30.55:8080",
+        target: "",
         pathRewrite: {
           '^/api': '/api',
         },
@@ -45,7 +45,7 @@ module.exports = {
         // 默认情况下，不接受运行在 HTTPS 上，且使用了无效证书的后端服务器。如果你想要接受，只要设置 secure: false 就行
       },
       "/test": {
-        target: "https://topstage.otechsolution.com",
+        target: "",
         pathRewrite: {
           '^/test': '/api',
         },
